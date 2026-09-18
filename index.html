@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winky 的英语复习站</title>
+<style>
+  :root{
+    --bg:#f7f4ef; --card:#ffffff; --ink:#2b2620; --sub:#8a8177;
+    --accent:#c25e3a; --accent-soft:#f6e3da; --line:#e9e2d8;
+    --green:#5b7f5b; --radius:16px;
+    --shadow:0 2px 10px rgba(60,45,30,.06);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.75;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+
+  header{background:linear-gradient(135deg,#fff 0%,var(--accent-soft) 100%);
+    border-bottom:1px solid var(--line); padding:36px 0 0;}
+  .tag{display:inline-block;background:var(--accent);color:#fff;font-size:12px;
+    padding:3px 12px;border-radius:99px;letter-spacing:2px;margin-bottom:12px;}
+  h1{font-size:28px;letter-spacing:1px;}
+  .sub{color:var(--sub);margin-top:6px;font-size:14px;padding-bottom:20px;}
+
+  /* 顶部页签 */
+  .tabs{display:flex;gap:8px;padding-bottom:0;}
+  .tab{padding:10px 22px;border:none;background:transparent;font-size:15px;
+    color:var(--sub);cursor:pointer;border-radius:12px 12px 0 0;font-weight:600;}
+  .tab.active{background:var(--bg);color:var(--accent);}
+  .tab:hover{color:var(--accent);}
+
+  .toolbar{display:flex;gap:10px;margin:24px 0 18px;flex-wrap:wrap;align-items:center;}
+  .search{flex:1;min-width:180px;padding:11px 16px;border:1px solid var(--line);
+    border-radius:99px;font-size:14px;background:#fff;outline:none;}
+  .search:focus{border-color:var(--accent);}
+  .btn{padding:11px 18px;border:none;border-radius:99px;background:var(--ink);
+    color:#fff;font-size:13px;cursor:pointer;}
+  .btn:hover{background:var(--accent);}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);}
+
+  /* 课程卡片 */
+  .lesson-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 22px;margin-bottom:14px;cursor:pointer;box-shadow:var(--shadow);
+    transition:transform .15s;display:flex;gap:16px;align-items:center;}
+  .lesson-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(60,45,30,.10);}
+  .num{flex:none;width:52px;height:52px;border-radius:14px;background:var(--accent-soft);
+    color:var(--accent);font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;}
+  .card-title{font-size:17px;font-weight:600;}
+  .card-meta{color:var(--sub);font-size:13px;margin-top:3px;}
+  .arrow{color:var(--sub);font-size:20px;flex:none;margin-left:auto;}
+  .empty{text-align:center;color:var(--sub);padding:60px 0;display:none;}
+
+  /* 笔记详情 */
+  .detail{display:none;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:34px 38px;box-shadow:var(--shadow);margin-bottom:40px;}
+  .detail.show{display:block;animation:fade .25s;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .back{border:none;background:none;color:var(--accent);cursor:pointer;font-size:14px;margin-bottom:16px;padding:0;}
+  .d-title{font-size:24px;margin-bottom:4px;}
+  .d-meta{color:var(--sub);font-size:13px;margin-bottom:22px;}
+  .d-section{margin-bottom:26px;}
+  .d-section h3{font-size:16px;color:var(--accent);margin-bottom:10px;
+    border-left:4px solid var(--accent);padding-left:10px;}
+  .d-section ul,.d-section ol{padding-left:22px;}
+  .d-section li{margin-bottom:8px;}
+  .en{color:var(--green);font-weight:600;}
+  .tip{background:var(--accent-soft);border-radius:12px;padding:14px 18px;font-size:14px;margin-top:8px;}
+  .dialog{background:#fbf9f5;border:1px dashed var(--line);border-radius:12px;padding:14px 18px;font-size:14px;margin-top:8px;}
+  .dialog p{margin-bottom:6px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .dialog .who{color:var(--accent);font-weight:600;flex:none;}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px;}
+  th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top;}
+  th{background:#faf6f0;}
+  .homework{background:#eef4ee;border-radius:12px;padding:14px 18px;font-size:14px;}
+
+  /* 发音按钮 */
+  .speak{border:1px solid var(--line);background:#fff;border-radius:99px;padding:2px 10px;
+    font-size:12px;color:var(--accent);cursor:pointer;flex:none;line-height:1.6;}
+  .speak:hover{background:var(--accent);color:#fff;}
+  .speak.on{background:var(--accent);color:#fff;}
+
+  /* 单词卡 */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;margin-bottom:40px;}
+  .flip{perspective:900px;height:170px;cursor:pointer;}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+  .flip.flipped .flip-inner{transform:rotateY(180deg);}
+  .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);
+    border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px;text-align:center;}
+  .face.back{transform:rotateY(180deg);background:#fbf7f2;}
+  .word{font-size:22px;font-weight:700;color:var(--ink);}
+  .phon{color:var(--sub);font-size:13px;}
+  .meaning{font-size:15px;color:var(--green);font-weight:600;}
+  .example{font-size:12.5px;color:var(--sub);line-height:1.5;}
+  .flip-hint{font-size:11px;color:var(--sub);}
+
+  /* 语音设置弹窗 */
+  .modal-mask{display:none;position:fixed;inset:0;background:rgba(40,30,20,.45);z-index:50;}
+  .modal-mask.show{display:flex;align-items:center;justify-content:center;}
+  .modal{background:#fff;border-radius:18px;max-width:600px;width:92%;max-height:85vh;overflow:auto;padding:28px 30px;}
+  .modal h2{font-size:19px;margin-bottom:14px;}
+  .modal label{font-size:13px;color:var(--sub);display:block;margin:12px 0 4px;}
+  .modal select,.modal input[type=range]{width:100%;padding:8px;border:1px solid var(--line);border-radius:10px;font-size:14px;}
+  .modal ol{padding-left:22px;font-size:14px;}
+  .modal li{margin-bottom:8px;}
+  pre{background:#2b2620;color:#f0ead9;padding:16px;border-radius:12px;font-size:12.5px;overflow:auto;line-height:1.6;margin:12px 0;}
+  .voice-status{font-size:12px;color:var(--sub);margin-top:6px;}
+
+  footer{color:var(--sub);font-size:12px;text-align:center;padding:26px 0 40px;}
+  @media(max-width:640px){.detail{padding:24px 20px;}h1{font-size:23px;}}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="tag">ENGLISH REVIEW</span>
+    <h1>Winky 的英语复习站</h1>
+    <p class="sub">课后笔记 + 单词卡 · 真人感女声发音 · 点击卡片即可复习</p>
+    <nav class="tabs">
+      <button class="tab active" id="tab-lessons" onclick="switchTab('lessons')">📒 课程笔记</button>
+      <button class="tab" id="tab-words" onclick="switchTab('words')">🃏 单词卡</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 课程页 -->
+  <section id="page-lessons">
+    <div class="toolbar">
+      <input class="search" id="search" type="text" placeholder="搜索课程关键词，如：黑客帝国 / 定语从句 / 美洲狮…">
+      <button class="btn ghost" onclick="testVoice()">🔊 试听声音</button>
+      <button class="btn ghost" onclick="openVoiceSettings()">⚙ 声音设置</button>
+      <button class="btn" onclick="openHelp()">＋ 添加课程教程</button>
+    </div>
+    <div id="list"></div>
+    <div class="empty" id="empty">没有找到相关课程</div>
+    <article class="detail" id="detail"></article>
+  </section>
+
+  <!-- 单词卡页 -->
+  <section id="page-words" style="display:none">
+    <div class="toolbar">
+      <span style="font-size:13px;color:var(--sub)">点击卡片翻面 · 点 🔊 听发音（女声）</span>
+      <button class="btn ghost" onclick="shuffleWords()">🔀 随机洗牌</button>
+      <button class="btn ghost" onclick="openVoiceSettings()">⚙ 声音设置</button>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+</main>
+
+<footer>Winky English Review · 声音设置保存在本机浏览器</footer>
+
+<!-- 声音设置弹窗 -->
+<div class="modal-mask" id="voiceMask">
+  <div class="modal">
+    <h2>🔊 声音设置</h2>
+    <p style="font-size:13px;color:var(--sub)">发音使用浏览器内置语音引擎（免费、无需联网下载），不同设备可选的声音不同。列表里标 💃 的是女声。</p>
+    <label>选择声音（推荐女声）</label>
+    <select id="voiceSelect" onchange="saveVoice()"><option value="">加载中…</option></select>
+    <div class="voice-status" id="voiceStatus"></div>
+    <label>语速：<span id="rateVal">0.9</span></label>
+    <input type="range" id="rate" min="0.5" max="1.2" step="0.1" value="0.9" oninput="document.getElementById('rateVal').textContent=this.value;saveVoice();">
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn" onclick="testVoice()">试听 Hello, Winky!</button>
+      <button class="btn ghost" onclick="document.getElementById('voiceMask').classList.remove('show')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 更新指南弹窗 -->
+<div class="modal-mask" id="mask" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal">
+    <h2>如何更新网站内容？</h2>
+    <p style="font-size:14px;margin-bottom:10px;"><b>① 添加一节新课：</b>打开 index.html，搜索定位到 <b>★★★ 新课程粘贴在这一行的上方 ★★★</b>，复制一节模板粘贴到上方，改内容保存即可：</p>
+    <pre>{
+  id: 11,
+  date: "2026-09-20",
+  title: "第十一课：标题",
+  subtitle: "Mike 老师 · 口语实战",
+  intro: "本课一句话总结。",
+  sections: [
+    { h: "一、核心句型", type: "list", items: [
+      "&lt;span class='en'&gt;English sentence.&lt;/span&gt; 中文。" ] },
+    { h: "二、对话", type: "dialog", lines: [
+      ["Winky", "What did you do?"],
+      ["Mike", "I stayed at home."] ] },
+    { h: "课后作业", type: "homework", text: "复述并录音。" }
+  ]
+}</pre>
+    <p style="font-size:14px;margin-bottom:10px;"><b>板块类型说明：</b><code>list</code> 知识点列表 / <code>table</code> 中英对照表 / <code>dialog</code> 对话 / <code>tip</code> 老师提醒 / <code>homework</code> 作业</p>
+    <p style="font-size:14px;margin-bottom:10px;"><b>② 添加单词：</b>在 <b>WORDS</b> 数据区同样格式加一行：</p>
+    <pre>{ w:"envelope", p:"/ˈenvələʊp/", m:"n. 信封", e:"Grab the red envelope!" }</pre>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:10px;"><b>③ 想用真人录音/mp3？</b>把 mp3 传到仓库 audio/ 文件夹，然后在数据里加 <code>audio:"audio/xxx.mp3"</code>，网站会优先播放 mp3，没有就自动用内置女声。</p>
+    <button class="btn" onclick="document.getElementById('mask').classList.remove('show')">知道了</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ★ 课程数据区 ★  新课粘贴到数组最前面（列表顶部）
+   sections 的 type：list 知识点列表 / table 中英对照表
+              dialog 对话 / tip 老师提醒 / homework 作业
+   ============================================================ */
+const LESSONS = [
+{
+  id: 10,
+  date: "2026-09-17",
+  title: "第十课：A Puma at Large 精读 + 黑客帝国复述",
+  subtitle: "Mike 老师 · 口语实战 · 新概念第二册第一课",
+  intro: "精读《A Puma at Large》，学习 only...away from 黄金句型和核心词汇；完整复述《黑客帝国》电影介绍（红蓝药丸经典段落）；最后用『四句话框架』练习描述自己的一天。",
+  sections: [
+    { h: "一、课前热身：今天要提前上课", type: "list", items: [
+      "提前：<span class='en'>put forward / move up / in advance</span>（上节课学过的表达，本节先复习）",
+      "为什么提前：<span class='en'>I want to put forward the class because I will pick up my friend at the airport.</span>",
+      "接人：<span class='en'>pick up my friend</span>（pick up = 接人）",
+      "下车：<span class='en'>Driver, drop me off at the school, please.</span>（drop sb off = 让某人下车）",
+      "参加朋友婚礼：<span class='en'>My friend is having a wedding, so I have to attend her wedding.</span>"
+    ]},
+    { h: "二、课文朗读：《A Puma at Large》", type: "tip", text: "新概念英语第二册第一课：伦敦动物园附近发现了野生美洲狮。朗读要领：先扫整句再开口，找到句号；生词先按大概读音跳过，优先流利度；按意群停顿。生词：accumulate 累积 / evidence 证据 / obliged 不得不 / investigate 调查 / claim 声称 / extraordinarily similar 出奇地相似 / blackberries 黑莓 / cornered 被逼入绝境 / at large 在逃。" },
+    { h: "三、核心词汇精讲", type: "list", items: [
+      "<span class='en'>accumulate</span> v. 累积、逐渐增加：<span class='en'>As the evidence began to accumulate, experts felt obliged to investigate.</span>",
+      "<span class='en'>evidence</span> n. 证据：随着证据不断浮现 <span class='en'>as the evidence began to accumulate</span>",
+      "<span class='en'>obliged</span> adj. 有义务的、不得不：<span class='en'>Experts from the zoo felt obliged to investigate.</span>",
+      "<span class='en'>claim</span> v. 声称：<span class='en'>people who claimed to have seen the puma</span>",
+      "<span class='en'>corner</span> v. 逼入绝境：<span class='en'>A puma will not attack a human being unless it is cornered.</span>",
+      "<span class='en'>at large</span> 在逃、逍遥法外：<span class='en'>A dangerous wild animal is still at large in the quiet countryside.</span>"
+    ]},
+    { h: "四、《黑客帝国》完整复述稿", type: "dialog", lines: [
+      ["Winky", "My favorite Hollywood movie is The Matrix."],
+      ["Winky", "The story happens in the future."],
+      ["Winky", "Machines and AI have a war with humans, but humans fail."],
+      ["Winky", "After that, AI trapped humans into a virtual world, which is called the Matrix."],
+      ["Winky", "One weekend, a young man knew his life was not real. And then he met Morpheus from the real world."],
+      ["Winky", "Morpheus gave him two pills — the blue one and the red one."],
+      ["Winky", "Have the blue one, and you will stay in the comfortable virtual world."],
+      ["Winky", "Have the red one, and you need to wake up and face the reality."],
+      ["Winky", "Neo chose the red one. He practiced so hard after he woke up and learned to fight."],
+      ["Winky", "Finally, when he faced Detective Smith, this war was so hard, but Neo won."]
+    ]},
+    { h: "五、黄金句型操练", type: "table", head: ["中文", "英文"], rows: [
+      ["他们相距只有五码。","<span class='en'>I saw Jason and Jenny only five yards away from each other.</span>"],
+      ["我惊呆了——他们相距只有30厘米。","<span class='en'>I was so shocked. They were only 30 centimeters away from each other.</span>"],
+      ["学校离我家只有50米。","<span class='en'>Our school is only 50 meters away from my house.</span>"],
+      ["今天我压力山大。","<span class='en'>Today I feel so stressed out.</span>"],
+      ["工作量是平时的三倍。","<span class='en'>Today's workload is triple my usual workload.</span>"],
+      ["我想请两天假放松一下。","<span class='en'>I want to take two days off to relax.</span>"]
+    ]},
+    { h: "六、描述一天的『四句话框架』", type: "list", items: [
+      "第①句 情绪开场：<span class='en'>Today I feel so stressed out.</span>",
+      "第②句 上午做了什么：<span class='en'>In the morning, I dealt with so many documents.</span>",
+      "第③句 具体时间+原因：<span class='en'>I finished all the documents at eleven o'clock and had a meeting at 3 pm, because today's workload is triple my usual workload.</span>",
+      "第④句 收尾打算：<span class='en'>Then I want to take two days off to relax.</span>",
+      "对比记忆：double 两倍 / triple 三倍；请假休息 <span class='en'>take time off</span>；书面请假 <span class='en'>ask for leave</span>"
+    ]},
+    { h: "七、易错纠正", type: "list", items: [
+      "用 one 避免重复：✅ <span class='en'>the blue one / the red one</span>，❌ 一句话里反复说 pill",
+      "<span class='en'>trap sb into...</span> 把某人困入……：<span class='en'>AI trapped humans into a virtual world.</span>",
+      "『被叫做』用 <span class='en'>which is called</span>，不用 it：<span class='en'>a virtual world which is called the Matrix</span>",
+      "story 故事 ≠ store 门店：<span class='en'>The story happens in the future.</span>（一般现在时）",
+      "fail 失败 ≠ lose 输了：<span class='en'>humans fail</span> / <span class='en'>lose the war</span>",
+      "中文常省略主语，英文必须补上：<span class='en'>Have the red one, and you need to wake up.</span>",
+      "cm = centimeter 厘米；yard 码（距离单位）"
+    ]},
+    { h: "八、老师点评", type: "tip", text: "你的框架已经掌握了，反应不够快、需要引导一下就能说出来——瓶颈在生词。作业跟上、词汇量扩大后，引导效率会更高。这篇文章很口语化、有内容：和人家讲故事、谈电影都是这种结构——从头到尾描述事情 + 说感受。描述类问题就用『四句话框架』回答。" },
+    { h: "课后作业", type: "homework", text: "① 把《黑客帝国》介绍整段流利说出来（脱稿）；② 用四句话框架描述你的一天（情绪→上午→具体时间+原因→打算）；③ 朗读《A Puma at Large》第一段，按意群停顿；④ 背熟本课词汇：accumulate, evidence, obliged, claim, trap, virtual, reality, triple, workload。" }
+  ]
+},
+{
+  id: 9,
+  date: "2026-09-15",
+  title: "第九课：iPhone Duo 广告朗读 + 定语从句 + 时间数字",
+  subtitle: "Mike 老师 · 口语实战 · 折叠 iPhone 广告文",
+  intro: "精读 iPhone Duo（折叠屏）英文广告，复习 8 组情绪表达，突击定语从句口语句型，并系统梳理时间介词（at/on/in）、提前与推迟、年份读法、万/百万单位和百分比增减表达。",
+  sections: [
+    { h: "一、课前热身：今天发工资！", type: "list", items: [
+      "发工资的日子：<span class='en'>Today is the salary day — the happiest day of the month!</span>（salary 工资）",
+      "问老师今天怎么样：<span class='en'>How was your day, Mike?</span>",
+      "没什么特别的：<span class='en'>Nothing special today.</span>",
+      "每天都要找点开心事：<span class='en'>You need to find a happy thing every day, or every day becomes meaningless.</span>"
+    ]},
+    { h: "二、话题讨论：新款折叠 iPhone", type: "list", items: [
+      "苹果发布了新款折叠 iPhone：<span class='en'>Apple launched the new foldable iPhone.</span>（foldable 可折叠的）",
+      "我认为苹果在向安卓学习：<span class='en'>I think the iPhone is learning from Android.</span>",
+      "外形小巧可爱：<span class='en'>The shape is very cute and small.</span>（shape 外形，比单说 cute 更具体）"
+    ]},
+    { h: "三、课文朗读：iPhone Duo 广告文", type: "tip", text: "老师带读全文两遍。朗读要领：先扫整句找句号，不会的词先跳过、优先流利度；主谓宾三四个词停一停，读出节奏感。重点生词：browse 浏览 / scroll 滚动 / texture 质感 / durable 耐用的 / hinge 铰链 / component 部件 / fine-tuned 微调 / snap 啪嗒声 / dual 双重的 / sustained 持久的 / intensity 强度 / remarkable 杰出的 / rear 后置的 / megapixel 百万像素 / selfie 自拍 / tripod 三脚架。" },
+    { h: "四、情绪表达：8 组必须背熟", type: "table", head: ["情绪", "英文表达"], rows: [
+      ["开心兴奋","<span class='en'>I'm so excited. / That's fantastic. / It makes my day.</span>"],
+      ["如释重负","<span class='en'>I'm really relieved.</span>"],
+      ["幸运感激","<span class='en'>I feel so lucky. / I'm really grateful.</span>"],
+      ["听到好消息","<span class='en'>I'm delighted to hear that.</span>"],
+      ["难过沮丧","<span class='en'>I'm a bit upset. / It's so frustrating.</span>"],
+      ["恼火有压力","<span class='en'>I'm really annoyed. / I feel so stressed out.</span>"],
+      ["震惊失望","<span class='en'>I'm totally shocked. / I'm quite disappointed.</span>"],
+      ["焦虑","<span class='en'>I feel anxious.</span>（x 发 /ʃ/ 音）"]
+    ]},
+    { h: "五、定语从句操练：练出节奏感", type: "table", head: ["中文", "英文"], rows: [
+      ["我很喜欢那家海景酒店。","<span class='en'>I really like the hotel that can see the sea.</span>"],
+      ["这是我昨天买的食物。","<span class='en'>This is the food I bought yesterday.</span>（口语中 that 可省略）"],
+      ["帮助过我的那个人很友好。","<span class='en'>That guy who helped me is very friendly.</span>"],
+      ["这是一家卖本地小吃的小店。","<span class='en'>This is a small shop that sells local snacks.</span>"],
+      ["我想预订你推荐的那个行程。","<span class='en'>I want to book the schedule you recommended.</span>"],
+      ["我们找到了一家 24 小时营业的餐厅。","<span class='en'>We found a restaurant that opens 24 hours.</span>"]
+    ]},
+    { h: "六、时间与数字表达", type: "list", items: [
+      "时间介词：具体时刻用 <span class='en'>at</span>（at 6 o'clock）、天/日期用 <span class='en'>on</span>（on Monday, on the weekend）、年月季节用 <span class='en'>in</span>（in September, in 2020, in winter）",
+      "语序从小到大：<span class='en'>I want to play basketball at eight o'clock in the morning on Friday.</span>",
+      "提前：<span class='en'>move up / put forward / going forward</span> — <span class='en'>Can we move up the schedule a little bit?</span>",
+      "推迟：<span class='en'>put off / postpone / delay</span> — <span class='en'>Can we put off Friday's activity?</span>",
+      "年份读法：1989 → <span class='en'>nineteen eighty-nine</span>；2000 → <span class='en'>two thousand</span>；2100 → <span class='en'>two thousand and one hundred</span>",
+      "英语没有『万』：10万 = <span class='en'>100k</span>，50万 = <span class='en'>500k</span>，755万 = <span class='en'>7.55 million</span>，75万 = <span class='en'>750k</span>",
+      "幅度用 by、数值用 to：<span class='en'>The performance increased by 500%.</span> / <span class='en'>Our customers increased to 100 this year.</span>",
+      "近五年收入一直在下降：<span class='en'>In the last five years, our company's income is decreasing.</span>"
+    ]},
+    { h: "七、老师点评", type: "tip", text: "今天开口比前几次课多很多，要保持！你目前的单词量已经足够支撑流利的口语，最大问题不是内容，而是朗读习惯——要按语块读、有节奏地读。单词发音不准没关系，先按大概读音读过去，先抓流利度。单词量还要继续扩大。" },
+    { h: "课后作业", type: "homework", text: "① 跟读 iPhone Duo 广告文，先读熟前两段再挑战全文（每天 15 分钟）；② 背诵 8 组情绪表达并录音；③ 定语从句 6 句练到一口气、有节奏地最快说完；④ 用 in the last five years + increase/decrease 各造 1 个句子。" }
+  ]
+}
+/* ★★★ 新课程粘贴在这一行的上方 ★★★ */
+];
+
+/* ============================================================
+   ★ 单词卡数据区 ★  audio 字段可选：填仓库里的 mp3 路径
+   ============================================================ */
+const WORDS = [
+  { w:"salary", p:"/ˈsæləri/", m:"n. 工资；薪水", e:"Today is the salary day!" },
+  { w:"foldable", p:"/ˈfəʊdəbl/", m:"adj. 可折叠的", e:"Apple launched the new foldable iPhone." },
+  { w:"browse", p:"/braʊz/", m:"v. 浏览", e:"When you browse Safari, you'll see more when you scroll." },
+  { w:"scroll", p:"/skrəʊl/", m:"v. 滚动", e:"You'll see more when you scroll." },
+  { w:"texture", p:"/ˈtekstʃə/", m:"n. 质感；质地", e:"a nanotexture finish to reduce reflections" },
+  { w:"durable", p:"/ˈdjʊərəbl/", m:"adj. 耐用的", e:"It's backed by a durable hinge." },
+  { w:"hinge", p:"/hɪndʒ/", m:"n. 铰链", e:"a durable hinge made of 100 components" },
+  { w:"component", p:"/kəmˈpəʊnənt/", m:"n. 部件；元件", e:"more than one hundred components" },
+  { w:"sustained", p:"/səˈsteɪnd/", m:"adj. 持久的", e:"higher sustained performance" },
+  { w:"intensity", p:"/ɪnˈtensəti/", m:"n. 强度", e:"higher intensity gaming" },
+  { w:"remarkable", p:"/rɪˈmɑːkəbl/", m:"adj. 杰出的", e:"All iPhones have remarkable rear cameras." },
+  { w:"megapixel", p:"/ˈmeɡəpɪksəl/", m:"n. 百万像素", e:"48-megapixel selfies" },
+  { w:"selfie", p:"/ˈselfi/", m:"n. 自拍", e:"take 48-megapixel selfies" },
+  { w:"tripod", p:"/ˈtraɪpɒd/", m:"n. 三脚架", e:"It can be its own tripod." },
+  { w:"performance", p:"/pəˈfɔːməns/", m:"n. 性能；表现", e:"The performance increased by 500%." },
+  { w:"postpone", p:"/pəˈspəʊn/", m:"v. 推迟", e:"Can we postpone Friday's activity?" },
+  { w:"anxious", p:"/ˈæŋkʃəs/", m:"adj. 焦虑的", e:"I feel anxious these days." },
+  { w:"grateful", p:"/ˈɡreɪtfl/", m:"adj. 感激的", e:"I'm really grateful." },
+  { w:"disappointed", p:"/ˌdɪsəˈpɔɪntɪd/", m:"adj. 失望的", e:"I'm quite disappointed." },
+  { w:"accumulate", p:"/əˈkjuːmjəleɪt/", m:"v. 累积", e:"As the evidence began to accumulate..." },
+  { w:"evidence", p:"/ˈevɪdəns/", m:"n. 证据", e:"The evidence began to accumulate." },
+  { w:"obliged", p:"/əˈblaɪdʒd/", m:"adj. 不得不；有义务的", e:"Experts felt obliged to investigate." },
+  { w:"investigate", p:"/ɪnˈvestɪɡeɪt/", m:"v. 调查", e:"Experts felt obliged to investigate." },
+  { w:"claim", p:"/kleɪm/", m:"v. 声称", e:"people who claimed to have seen the puma" },
+  { w:"blackberry", p:"/ˈblækbəri/", m:"n. 黑莓（blueberry 蓝莓）", e:"a woman picking blackberries" },
+  { w:"trap", p:"/træp/", m:"v. 困住", e:"AI trapped humans into a virtual world." },
+  { w:"virtual", p:"/ˈvɜːtʃuəl/", m:"adj. 虚拟的", e:"a virtual world (VR)" },
+  { w:"reality", p:"/riˈæləti/", m:"n. 现实", e:"Face the reality." },
+  { w:"detective", p:"/dɪˈtektɪv/", m:"n. 侦探；探员", e:"Detective Smith 史密斯探员" },
+  { w:"tough", p:"/tʌf/", m:"adj. 艰难的；辛苦的", e:"Some tough work can be reduced." },
+  { w:"triple", p:"/ˈtrɪpl/", m:"adj. 三倍的", e:"Today's workload is triple my usual." },
+  { w:"workload", p:"/ˈwɜːkləʊd/", m:"n. 工作量", e:"today's workload 今天的工作量" },
+  { w:"centimeter", p:"/ˈsentɪmiːtə/", m:"n. 厘米（cm）", e:"only 30 centimeters away" },
+  { w:"extraordinary", p:"/ɪkˈstrɔːdnri/", m:"adj. 非凡的", e:"extraordinarily similar 出奇地相似" }
+];
+
+/* ================= 语音引擎（女声优先） ================= */
+let VOICES = [];
+const FEMALE_HINT = ['female','samantha','zira','victoria','karen','moira','tessa','fiona',
+  'aria','jenny','susan','allison','ava','serena','kate','stephanie','catherine','google uk english female'];
+const MALE_HINT = ['male','daniel','alex','fred','george','thomas','arthur','aaron','guy','james','david'];
+
+function refreshVoices(){
+  if(!('speechSynthesis' in window)) {
+    document.getElementById('voiceStatus').textContent = '⚠ 当前浏览器不支持语音合成，请用 Chrome / Edge / Safari 打开';
+    return;
+  }
+  VOICES = speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  const saved = localStorage.getItem('winky_voice');
+  const en = VOICES.filter(v => v.lang.toLowerCase().startsWith('en'));
+  sel.innerHTML = '';
+  if(!en.length){ sel.innerHTML = '<option value="">（暂无英文语音，点下方按钮刷新）</option>'; return; }
+  // 女声排前面
+  const score = v => {
+    const n = v.name.toLowerCase();
+    if(FEMALE_HINT.some(h => n.includes(h))) return 0;
+    if(MALE_HINT.some(h => n.includes(h))) return 2;
+    return 1;
+  };
+  en.sort((a,b) => score(a)-score(b));
+  en.forEach((v) => {
+    const o = document.createElement('option');
+    o.value = v.name;
+    o.textContent = (score(v)===0 ? '💃 ' : '   ') + v.name + ' (' + v.lang + ')';
+    sel.appendChild(o);
+    if(saved && v.name === saved) sel.value = v.name;
+  });
+  if(!sel.value) sel.selectedIndex = 0; // 默认第一个（女声优先）
+  document.getElementById('voiceStatus').textContent =
+    '共 ' + en.length + ' 个英文声音，💃 为推荐女声（不同设备可选声音不同）';
+}
+if('speechSynthesis' in window){
+  refreshVoices();
+  speechSynthesis.onvoiceschanged = refreshVoices;
+}
+function getVoice(){
+  const name = document.getElementById('voiceSelect').value;
+  return VOICES.find(v => v.name === name) || VOICES.find(v => v.lang.toLowerCase().startsWith('en'));
+}
+function saveVoice(){
+  localStorage.setItem('winky_voice', document.getElementById('voiceSelect').value);
+  localStorage.setItem('winky_rate', document.getElementById('rate').value);
+}
+function speak(text, btn, audioPath){
+  // ① 有真人录音 mp3 就优先播（GitHub 仓库可托管音频）
+  if(audioPath){
+    const a = new Audio(audioPath);
+    a.play().catch(() => ttsSpeak(text, btn));
+    return;
+  }
+  ttsSpeak(text, btn);
+}
+function ttsSpeak(text, btn){
+  if(!('speechSynthesis' in window)){ alert('当前浏览器不支持语音，请用 Chrome / Edge / Safari 打开'); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getVoice();
+  if(v) u.voice = v;
+  u.lang = 'en-US';
+  u.rate = parseFloat(localStorage.getItem('winky_rate') || document.getElementById('rate').value || 0.9);
+  if(btn){
+    btn.classList.add('on');
+    u.onend = u.onerror = () => btn.classList.remove('on');
+  }
+  speechSynthesis.speak(u);
+}
+function testVoice(){ speak('Hello, Winky! Nice to meet you.', null); }
+function openVoiceSettings(){
+  refreshVoices();
+  document.getElementById('voiceMask').classList.add('show');
+}
+(function(){ // 恢复语速
+  const r = localStorage.getItem('winky_rate');
+  if(r){ document.getElementById('rate').value = r; document.getElementById('rateVal').textContent = r; }
+})();
+
+/* ================= 页面逻辑 ================= */
+const listEl = document.getElementById('list');
+const detailEl = document.getElementById('detail');
+const emptyEl = document.getElementById('empty');
+
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function speakBtn(text){ return ` <button class="speak" onclick="event.stopPropagation();speak('${text.replace(/'/g,"\\'")}',this)">🔊 发音</button>`; }
+
+function renderList(filter=''){
+  listEl.innerHTML = '';
+  const kw = filter.trim().toLowerCase();
+  let shown = 0;
+  LESSONS.forEach(ls => {
+    const text = (ls.title + ls.subtitle + JSON.stringify(ls.sections)).toLowerCase();
+    if(kw && !text.includes(kw)) return;
+    shown++;
+    const card = document.createElement('div');
+    card.className = 'lesson-card';
+    card.innerHTML = `<div class="num">${ls.id}</div>
+      <div><div class="card-title">${esc(ls.title)}</div>
+      <div class="card-meta">${esc(ls.date)} · ${esc(ls.subtitle)}</div></div>
+      <div class="arrow">›</div>`;
+    card.onclick = () => showDetail(ls.id);
+    listEl.appendChild(card);
+  });
+  emptyEl.style.display = shown ? 'none' : 'block';
+}
+
+function sectionHTML(sec){
+  let body = '';
+  if(sec.type === 'list') body = '<ul>' + sec.items.map(i => `<li>${i}</li>`).join('') + '</ul>';
+  else if(sec.type === 'table') body = `<table><tr>${sec.head.map(h=>`<th>${h}</th>`).join('')}</tr>` +
+    sec.rows.map(r => '<tr>' + r.map(c => `<td>${c}${ /<span class='en'>([^<]+)<\/span>/.test(c) ? speakBtn(c.match(/<span class='en'>([^<]+)<\/span>/)[1]) : ''}</td>`).join('') + '</tr>').join('') + '</table>';
+  else if(sec.type === 'dialog') body = '<div class="dialog">' + sec.lines.map(l =>
+    `<p><span class="who">${esc(l[0])}:</span><span>${esc(l[1])}</span>${speakBtn(l[1])}</p>`).join('') + '</div>';
+  else if(sec.type === 'tip') body = `<div class="tip">💡 ${sec.text}</div>`;
+  else if(sec.type === 'homework') body = `<div class="homework">📌 ${sec.text}</div>`;
+  return `<div class="d-section"><h3>${sec.h}</h3>${body}</div>`;
+}
+
+function showDetail(id){
+  const ls = LESSONS.find(l => l.id === id);
+  if(!ls) return;
+  detailEl.innerHTML = `<button class="back" onclick="goBack()">‹ 返回课程列表</button>
+    <div class="d-title">${esc(ls.title)}</div>
+    <div class="d-meta">${esc(ls.date)} · ${esc(ls.subtitle)}</div>` +
+    (ls.intro ? `<div class="tip" style="margin-bottom:22px">📖 ${ls.intro}</div>` : '') +
+    ls.sections.map(sectionHTML).join('');
+  detailEl.classList.add('show');
+  listEl.style.display = 'none'; emptyEl.style.display = 'none';
+  document.querySelector('#page-lessons .toolbar').style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function goBack(){
+  detailEl.classList.remove('show');
+  listEl.style.display = '';
+  document.querySelector('#page-lessons .toolbar').style.display = '';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('search').addEventListener('input', e => renderList(e.target.value));
+
+/* 单词卡 */
+function renderWords(){
+  const box = document.getElementById('cards');
+  box.innerHTML = '';
+  WORDS.forEach(item => {
+    const d = document.createElement('div');
+    d.className = 'flip';
+    d.innerHTML = `<div class="flip-inner">
+      <div class="face">
+        <div class="word">${esc(item.w)}</div>
+        <div class="phon">${esc(item.p)}</div>
+        <button class="speak" onclick="event.stopPropagation();speak('${item.w}',this${item.audio?`,'${item.audio}'`:''})">🔊 发音</button>
+        <div class="flip-hint">点击翻面看释义 →</div>
+      </div>
+      <div class="face back">
+        <div class="meaning">${esc(item.m)}</div>
+        <div class="example">${esc(item.e)}</div>
+        <button class="speak" onclick="event.stopPropagation();speak('${item.e.replace(/'/g,"\\'")}',this)">🔊 读例句</button>
+      </div>
+    </div>`;
+    d.onclick = () => d.classList.toggle('flipped');
+    box.appendChild(d);
+  });
+}
+function shuffleWords(){
+  for(let i=WORDS.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [WORDS[i],WORDS[j]]=[WORDS[j],WORDS[i]]; }
+  renderWords();
+}
+
+/* 页签切换 */
+function switchTab(tab){
+  document.getElementById('tab-lessons').classList.toggle('active', tab==='lessons');
+  document.getElementById('tab-words').classList.toggle('active', tab==='words');
+  document.getElementById('page-lessons').style.display = tab==='lessons' ? '' : 'none';
+  document.getElementById('page-words').style.display = tab==='words' ? '' : 'none';
+  if(tab==='lessons') goBack();
+  window.scrollTo({top:0});
+}
+function openHelp(){ document.getElementById('mask').classList.add('show'); }
+
+renderList();
+renderWords();
+</script>
+</body>
+</html>
