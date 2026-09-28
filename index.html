@@ -176,9 +176,9 @@
     <h2>如何更新网站内容？</h2>
     <p style="font-size:14px;margin-bottom:10px;"><b>① 添加一节新课：</b>打开 index.html，搜索定位到 <b>★★★ 新课程粘贴在这一行的上方 ★★★</b>，复制一节模板粘贴到上方，改内容保存即可：</p>
     <pre>{
-  id: 11,
+  id: 12,
   date: "2026-09-20",
-  title: "第十一课：标题",
+  title: "第十二课：标题",
   subtitle: "Mike 老师 · 口语实战",
   intro: "本课一句话总结。",
   sections: [
@@ -205,6 +205,58 @@
               dialog 对话 / tip 老师提醒 / homework 作业
    ============================================================ */
 const LESSONS = [
+{
+  id: 11,
+  date: "2026-09-24",
+  title: "第十一课：阅读专项 · 连读与意群 + 两篇新概念课文",
+  subtitle: "Mike 老师 · 口语实战 · 《Percy Buttons》+《Too Late》",
+  intro: "本课专攻『怎么把英语读顺』——连读、虚词弱读、按主谓宾拆意群，精讲新概念第二册第 6 课《Percy Buttons》和第 7 课《Too Late》；并用『早中晚 + the reason why』框架再次实战描述自己的一天。",
+  sections: [
+    { h: "一、课前热身：明天中秋放假！", type: "list", items: [
+      "节日问候：<span class='en'>Tomorrow is a holiday. How are you doing?</span>",
+      "宅家三连：<span class='en'>I will stay at home, lie in the bed and play on the phone. Just take a rest.</span>",
+      "和同事聚餐：<span class='en'>Yesterday I had a dinner with my workmate.</span>（同事 = workmate / coworker）",
+      "把这事忘了：<span class='en'>I forgot the work.</span>（forget → forgot 过去式）",
+      "本课任务：先复习上节课『四句话框架』，再讲阅读怎么读——纠正连读，读顺了口语才会流利"
+    ]},
+    { h: "二、四句话框架实战 + 两个新句型", type: "list", items: [
+      "情绪开场：<span class='en'>Today I was so busy.</span>",
+      "早中晚三件事（并列句 and 串起来）：<span class='en'>In the morning I had a meeting at ten o'clock, in the afternoon I had to do security checking, and in the evening I went shopping because the store had a sale.</span>",
+      "新句型 ① the reason why...（非常口语，一定要背）：<span class='en'>The reason why I have so many works to do at the same time is that I'm going to have a long holiday next week.</span>",
+      "新句型 ② I only want to... 我只想：<span class='en'>But right now I only want to enjoy the Mid-Autumn Festival for rest.</span>",
+      "不得不：<span class='en'>I have to do security checking.</span>（have to + 动词原形；check 加 ing 变名词 checking）",
+      "中秋节 = 仲秋：<span class='en'>the Mid-Autumn Festival</span>；安全检查：<span class='en'>security check / safety check</span>（港剧里保安叫 security）",
+      "老师要求：以后问你今天做了什么，至少要流利说出『早中晚各做了什么』这一层，简单主谓宾就好"
+    ]},
+    { h: "三、课文朗读 ①《Percy Buttons 乞丐》（新概念二册 · 第6课）", type: "tip", text: "原文：I have just moved to a house in Bridge Street. Yesterday a beggar knocked at my door. He asked me for a meal and a glass of beer. In return for this, the beggar stood on his head and sang songs. I gave him a meal. He ate the food and drank the beer. Then he put a piece of cheese in his pocket and went away. Later, a neighbour told me about him. Everybody knows him. His name is Percy Buttons. He calls at every house in the street once a month and always asks for a meal and a glass of beer. 生词：beggar 乞丐 / knock 敲 / stood（stand 的过去式）站立 / a piece of 一块 / cheese 芝士 / pocket 口袋 / neighbour 邻居 / once a month 每月一次。" },
+    { h: "四、课文 ① 核心短语", type: "table", head: ["中文", "英文"], rows: [
+      ["向某人要某物", "<span class='en'>He asked me for a meal and a glass of beer.</span>（ask sb for sth）"],
+      ["朋友向我借一本书", "<span class='en'>My friend asked me for a book.</span>"],
+      ["作为报答", "<span class='en'>In return for this, I want to invite you to dinner.</span>（invite sb to dinner 请某人吃饭）"],
+      ["倒立", "<span class='en'>stand on one's head</span>（『头朝下站着』就是倒立）"],
+      ["逐户拜访、光顾", "<span class='en'>He calls at every house in the street once a month.</span>"]
+    ]},
+    { h: "五、连读规则（本课核心！）", type: "list", items: [
+      "① 虚词弱读：<span class='en'>to / and / of / a</span> 一带而过，千万别卡住。moved to a house → <span class='en'>moved-ta house</span>，一口气说出来才快",
+      "② 辅音 + 元音要连读（两词合成一个词）：<span class='en'>knocked at → knockit / a glass of → glassof / went away → wentaway / carry it → carryit</span>",
+      "③ -ed 过去式不重读：<span class='en'>asked me</span> 直接读成 <span class='en'>ask me</span>，没那么重要",
+      "④ h 开头的代词弱读：<span class='en'>knows him → knows-im</span>（him 的 h 几乎不发音）",
+      "⑤ 判断口诀：上词结尾是辅音（b/d/t/l/s…），下词开头是元音（a/e/i/o/u），就连起来读",
+      "辅助理解：辅音 = 喉咙不震动（送气音）；元音 = 喉咙震动"
+    ]},
+    { h: "六、课文朗读 ②《Too Late 侦探》（新概念二册 · 第7课，较难）", type: "tip", text: "原文：The plane was late and detectives were waiting at the airport all morning. They were expecting a valuable parcel of diamonds from South Africa. A few hours earlier, someone had told the police that thieves would try to steal the diamonds. When the plane arrived, some of the detectives were waiting inside the main building while others were waiting on the airfield. Two men took the parcel off the plane and carried it into the Customs House. While two detectives were keeping guard at the door, two others opened the parcel. To their surprise, the precious parcel was full of stones and sand! 生词：detective 侦探 / expect 期待 / valuable 贵重的 / parcel 包裹 / diamond 钻石 / thieves（thief 的复数）小偷 / steal 偷 / airfield 停机坪 / guard 守卫 / precious 珍贵的 / stones and sand 石头和沙子。" },
+    { h: "七、拆句与讲故事的节奏", type: "list", items: [
+      "按主谓宾拆块：<span class='en'>The plane was late | and detectives were waiting at the airport all morning.</span>",
+      "主语长就拆开、稍重读：<span class='en'>Some of the detectives | were waiting inside the main building.</span>",
+      "从句也是独立一块：<span class='en'>A few hours earlier, | someone had told the police | that thieves would try to steal the diamonds.</span>",
+      "口语最多五六个词就停一停，三四个词的节奏最舒服",
+      "讲故事要有画面感：读的时候知道这句话在讲什么，感觉后面有事要发生，就停一停",
+      "连读家族再记一遍：<span class='en'>parcel of / most of / a lot of / full of / carry it</span>"
+    ]},
+    { h: "八、老师点评", type: "tip", text: "一次比一次好！后半段几乎一口气读完，已经有腔调、有节奏了。以后不要怕说错——说了就过，不要停。连读是为了读得快而诞生的：要连读就要快，读得慢就不用硬连。这两周把连读练好，之后每天读一篇文章，读顺了你就会越读越享受。中秋快乐！" },
+    { h: "课后作业", type: "homework", text: "① 把《Too Late 侦探》最后一段重新读熟，当天交给老师；② 每天读一篇文章打卡，练习连读和意群停顿；③ 用『早中晚 + the reason why』框架描述你的一天；④ 背生词：beggar, knock, pocket, expect, valuable, parcel, diamond, steal, precious, security。" }
+  ]
+},
 {
   id: 10,
   date: "2026-09-17",
@@ -318,7 +370,7 @@ const LESSONS = [
     { h: "七、老师点评", type: "tip", text: "今天开口比前几次课多很多，要保持！你目前的单词量已经足够支撑流利的口语，最大问题不是内容，而是朗读习惯——要按语块读、有节奏地读。单词发音不准没关系，先按大概读音读过去，先抓流利度。单词量还要继续扩大。" },
     { h: "课后作业", type: "homework", text: "① 跟读 iPhone Duo 广告文，先读熟前两段再挑战全文（每天 15 分钟）；② 背诵 8 组情绪表达并录音；③ 定语从句 6 句练到一口气、有节奏地最快说完；④ 用 in the last five years + increase/decrease 各造 1 个句子。" }
   ]
-}
+},
 /* ★★★ 新课程粘贴在这一行的上方 ★★★ */
 ];
 
@@ -326,6 +378,22 @@ const LESSONS = [
    ★ 单词卡数据区 ★  audio 字段可选：填仓库里的 mp3 路径
    ============================================================ */
 const WORDS = [
+  { w:"beggar", p:"/ˈbeɡə/", m:"n. 乞丐", e:"Yesterday a beggar knocked at my door." },
+  { w:"knock", p:"/nɒk/", m:"v. 敲（门）", e:"A beggar knocked at my door." },
+  { w:"pocket", p:"/ˈpɒkɪt/", m:"n. 口袋", e:"He put a piece of cheese in his pocket." },
+  { w:"neighbour", p:"/ˈneɪbə/", m:"n. 邻居", e:"A neighbour told me about him." },
+  { w:"expect", p:"/ɪkˈspekt/", m:"v. 期待；预计", e:"They were expecting a valuable parcel." },
+  { w:"valuable", p:"/ˈvæljuəbl/", m:"adj. 贵重的", e:"a valuable parcel of diamonds" },
+  { w:"parcel", p:"/ˈpɑːsl/", m:"n. 包裹", e:"Two men took the parcel off the plane." },
+  { w:"diamond", p:"/ˈdaɪəmənd/", m:"n. 钻石", e:"thieves would try to steal the diamonds" },
+  { w:"steal", p:"/stiːl/", m:"v. 偷", e:"Thieves would try to steal the diamonds." },
+  { w:"thief", p:"/θiːf/", m:"n. 小偷（复数 thieves）", e:"The police caught the thief." },
+  { w:"precious", p:"/ˈpreʃəs/", m:"adj. 珍贵的", e:"The precious parcel was full of stones and sand." },
+  { w:"guard", p:"/ɡɑːd/", m:"n./v. 守卫", e:"Two detectives were keeping guard at the door." },
+  { w:"security", p:"/sɪˈkjʊərəti/", m:"n. 安全；保安", e:"I have to do security checking." },
+  { w:"festival", p:"/ˈfestɪvl/", m:"n. 节日", e:"the Mid-Autumn Festival 中秋节" },
+  { w:"invite", p:"/ɪnˈvaɪt/", m:"v. 邀请", e:"I want to invite you to dinner." },
+  { w:"sale", p:"/seɪl/", m:"n. 促销；打折", e:"I went shopping because the store had a sale." },
   { w:"salary", p:"/ˈsæləri/", m:"n. 工资；薪水", e:"Today is the salary day!" },
   { w:"foldable", p:"/ˈfəʊdəbl/", m:"adj. 可折叠的", e:"Apple launched the new foldable iPhone." },
   { w:"browse", p:"/braʊz/", m:"v. 浏览", e:"When you browse Safari, you'll see more when you scroll." },
