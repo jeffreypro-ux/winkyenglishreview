@@ -176,9 +176,9 @@
     <h2>如何更新网站内容？</h2>
     <p style="font-size:14px;margin-bottom:10px;"><b>① 添加一节新课：</b>打开 index.html，搜索定位到 <b>★★★ 新课程粘贴在这一行的上方 ★★★</b>，复制一节模板粘贴到上方，改内容保存即可：</p>
     <pre>{
-  id: 12,
+  id: 11,
   date: "2026-09-20",
-  title: "第十二课：标题",
+  title: "第十一课：标题",
   subtitle: "Mike 老师 · 口语实战",
   intro: "本课一句话总结。",
   sections: [
@@ -206,9 +206,81 @@
    ============================================================ */
 const LESSONS = [
 {
-  id: 11,
+  id: 10,
+  date: "2026-10-08",
+  title: "第十课：点咖啡 + 酒店入住场景对话 + 1分钟小演讲",
+  subtitle: "Mike 老师 · 口语实战 · 日常场景直接用",
+  intro: "假期归来先闲聊（理发翻车现场学 expectation），随后小测试复习疑问句；本课重点两个日常场景对话——点咖啡和酒店 check in，最后挑战 1 分钟小演讲《My Last Holiday》，学会『框架 → 关键词 → 加料』的演讲准备法。",
+  sections: [
+    { h: "一、课前闲聊：假期归来", type: "list", items: [
+      "还没休息够：✅ <span class='en'>I didn't get enough rest. / I haven't had enough rest.</span> ❌ relax time 是课堂上的中式说法，『休息』名词要用 <span class='en'>rest</span>",
+      "回老家：<span class='en'>I went back to my hometown (Mianyang) by train.</span>（绵阳 Mianyang；坐火车 by train）",
+      "和往常一样：<span class='en'>Same as before.</span>（previous 也可以）",
+      "理发翻车：<span class='en'>Yesterday I went to the salon to do my hair. I showed the picture to the hairdresser, but it's not the expectation I want.</span>（expectation 预期；hairdresser 理发师；salon 本身就有理发店的意思，不用再加 store）",
+      "适应工作：✅ <span class='en'>I've adapted to the environment. / I'm used to it now.</span> （be used to 习惯了；❌ 不说 very adapted，adapted 前不加 very 修饰）"
+    ]},
+    { h: "二、小测试：疑问句改错（全对！）", type: "list", items: [
+      "改错原句多了一个 did → ✅ <span class='en'>What do you do during the...?</span>（问日常习惯）⚠️ 注意：问刚过去的假期，<span class='en'>What did you do during the holiday?</span> 完全正确（本课后面的练习里就是这句）——用 did 还是 do，取决于问过去还是问习惯",
+      "❌ Where does she goes → ✅ <span class='en'>Where does she go?</span> / <span class='en'>Where is she going?</span>（现在进行时也对）",
+      "❌ Does he likes → ✅ <span class='en'>Does he like...?</span>（疑问句动词不加三单）",
+      "❌ How long you stay → ✅ <span class='en'>How long did you stay in your hometown?</span>（过去式 did + 动词原形）",
+      "选词填空：how far 多远 / how many 多少（可数）/ how much 多少（不可数）/ how often 多久一次（问频率）",
+      "动词 + 动词：后面的动词加 ing 变动名词：<span class='en'>go traveling / I like playing basketball.</span>"
+    ]},
+    { h: "三、场景对话 ①：点咖啡（8 句必背）", type: "table", head: ["中文", "英文"], rows: [
+      ["我要一杯拿铁。","<span class='en'>I would like a cup of latte.</span>（I'd like... 最礼貌）"],
+      ["给我看下菜单。","<span class='en'>Can I have the menu?</span>"],
+      ["有什么推荐？","<span class='en'>What do you recommend? / Do you have any recommendation?</span>（名词）"],
+      ["有大杯吗？","<span class='en'>Do you have the large size?</span>（large 大 / middle 中 / small 小）"],
+      ["能加糖吗？","<span class='en'>Could I have some sugar?</span>"],
+      ["少糖（三分糖）","<span class='en'>I'd like a cup of latte with 30% sugar, please.</span>（或 less sugar）"],
+      ["堂食还是外带？","<span class='en'>For here or to go?</span>"],
+      ["刷卡 & 结账","<span class='en'>Can I pay by card? / Can I have the bill?</span>"]
+    ]},
+    { h: "四、点咖啡情景演练", type: "dialog", lines: [
+      ["Waiter", "Welcome! How many people?"],
+      ["Winky", "One person. Can I have the menu?"],
+      ["Waiter", "Sure. What would you like to drink?"],
+      ["Winky", "Do you have any recommendation?"],
+      ["Waiter", "Yes, our latte is very popular."],
+      ["Winky", "I would like a middle size of latte."],
+      ["Waiter", "Would you like some sugar?"],
+      ["Winky", "No thanks. Can I have a glass of water?"],
+      ["Waiter", "Anything else?"],
+      ["Winky", "No, that's all."],
+      ["Waiter", "For here or to go?"],
+      ["Winky", "For here. Can I pay by card?"],
+      ["Waiter", "Yes, absolutely. That's 25 yuan."],
+      ["Winky", "Thank you!"]
+    ]},
+    { h: "五、场景对话 ②：酒店入住 Check-in", type: "list", items: [
+      "入住：<span class='en'>I'd like to check in.</span>；退房：<span class='en'>check out</span>",
+      "我有预定：<span class='en'>I have a reservation for a double room under the name of Wang.</span>（reservation 是名词，配 have；under the name of 用谁的名字）",
+      "看护照：<span class='en'>Can I have your passport?</span> 递东西：<span class='en'>Here you are.</span>",
+      "住两晚：<span class='en'>One double room for two nights.</span>",
+      "包早餐吗（被动语态）：<span class='en'>Is breakfast included?</span>（include → included）",
+      "早餐几点开始：<span class='en'>What time does breakfast start?</span>",
+      "叫醒服务：<span class='en'>Could I have a wake up call at seven o'clock?</span>",
+      "给房卡：<span class='en'>Here's your key card. Room three oh five, floor three.</span>（here is your... = 给你；房号 305 读 three oh five）",
+      "几点退房：<span class='en'>What time is check out?</span> — <span class='en'>Before twelve.</span>",
+      "词汇：reception 前台 / reservation 预定 / passport 护照 / key card 房卡 / double room 大床房 / twin room 双床房 / fill in 填写"
+    ]},
+    { h: "六、1分钟小演讲：《My Last Holiday》", type: "list", items: [
+      "准备三步法：① 搭框架 → ② 填关键词 → ③ 加料（每件事加『谁/为什么/感受』三选一）",
+      "万能框架：<span class='en'>I'd like to talk about my last holiday. First... And then... Also... So...</span>",
+      "时间轴三件事：第一天去医院 check my skin；第二天回 hometown（开心，能 take a break）；最后一天去 salon store 做头发（想换个心情）",
+      "翻车收尾：<span class='en'>But I feel very frustrated because it's not the expectation I want.</span>（frustrated 形容词，frustration 是名词；简单就说 unhappy）",
+      "结尾：<span class='en'>That's all. Thank you.</span>",
+      "⚠️ 讲述过去的事要用过去式：go→went、have→had；第几天用 on 不用 in：❌ In the second day I go back → ✅ <span class='en'>On the second day I went back to my hometown.</span>"
+    ]},
+    { h: "七、老师点评", type: "tip", text: "小测试全对，疑问句掌握得不错！演讲有东西说但有点乱——记住先框架、再关键词、再加料。后面每节课都会这样练情景对话 + 演讲，这是最快的提升方式。接下来一定要坚持每天背 46 级单词半小时打卡（建议用上班摸鱼时间学），单词吃透了才能用得上来。" },
+    { h: "课后作业", type: "homework", text: "① 每天背单词半小时，坚持 46 级词汇打卡；② 点咖啡 8 句 + 酒店入住对话各练熟一遍；③ 1 分钟演讲《My Last Holiday》说流利并录音；④ 复习本课疑问句改错题。" }
+  ]
+},
+{
+  id: 9,
   date: "2026-09-24",
-  title: "第十一课：阅读专项 · 连读与意群 + 两篇新概念课文",
+  title: "第九课：阅读专项 · 连读与意群 + 两篇新概念课文",
   subtitle: "Mike 老师 · 口语实战 · 《Percy Buttons》+《Too Late》",
   intro: "本课专攻『怎么把英语读顺』——连读、虚词弱读、按主谓宾拆意群，精讲新概念第二册第 6 课《Percy Buttons》和第 7 课《Too Late》；并用『早中晚 + the reason why』框架再次实战描述自己的一天。",
   sections: [
@@ -258,9 +330,9 @@ const LESSONS = [
   ]
 },
 {
-  id: 10,
+  id: 8,
   date: "2026-09-17",
-  title: "第十课：A Puma at Large 精读 + 黑客帝国复述",
+  title: "第八课：A Puma at Large 精读 + 黑客帝国复述",
   subtitle: "Mike 老师 · 口语实战 · 新概念第二册第一课",
   intro: "精读《A Puma at Large》，学习 only...away from 黄金句型和核心词汇；完整复述《黑客帝国》电影介绍（红蓝药丸经典段落）；最后用『四句话框架』练习描述自己的一天。",
   sections: [
@@ -321,9 +393,9 @@ const LESSONS = [
   ]
 },
 {
-  id: 9,
+  id: 7,
   date: "2026-09-15",
-  title: "第九课：iPhone Duo 广告朗读 + 定语从句 + 时间数字",
+  title: "第七课：iPhone Duo 广告朗读 + 定语从句 + 时间数字",
   subtitle: "Mike 老师 · 口语实战 · 折叠 iPhone 广告文",
   intro: "精读 iPhone Duo（折叠屏）英文广告，复习 8 组情绪表达，突击定语从句口语句型，并系统梳理时间介词（at/on/in）、提前与推迟、年份读法、万/百万单位和百分比增减表达。",
   sections: [
@@ -378,6 +450,21 @@ const LESSONS = [
    ★ 单词卡数据区 ★  audio 字段可选：填仓库里的 mp3 路径
    ============================================================ */
 const WORDS = [
+  { w:"reception", p:"/rɪˈsepʃn/", m:"n. 前台；接待", e:"Ask at the reception." },
+  { w:"reservation", p:"/ˌrezəˈveɪʃn/", m:"n. 预定", e:"I have a reservation under the name of Wang." },
+  { w:"passport", p:"/ˈpɑːspɔːt/", m:"n. 护照", e:"Can I have your passport?" },
+  { w:"include", p:"/ɪnˈkluːd/", m:"v. 包含", e:"Is breakfast included?" },
+  { w:"latte", p:"/ˈlɑːteɪ/", m:"n. 拿铁", e:"I would like a cup of latte." },
+  { w:"espresso", p:"/eˈspresəʊ/", m:"n. 浓缩咖啡", e:"An espresso, please." },
+  { w:"americano", p:"/əˌmerɪˈkɑːnəʊ/", m:"n. 美式咖啡", e:"I prefer americano." },
+  { w:"cappuccino", p:"/ˌkæpuˈtʃiːnəʊ/", m:"n. 卡布奇诺", e:"A cappuccino with less sugar." },
+  { w:"mocha", p:"/ˈmɒkə/", m:"n. 摩卡", e:"A middle size of mocha." },
+  { w:"recommendation", p:"/ˌrekəmenˈdeɪʃn/", m:"n. 推荐", e:"Do you have any recommendation?" },
+  { w:"salon", p:"/ˈsælɒn/", m:"n. 理发店；沙龙", e:"I went to the salon to do my hair." },
+  { w:"hairdresser", p:"/ˈheədresə/", m:"n. 理发师", e:"I showed the picture to the hairdresser." },
+  { w:"expectation", p:"/ˌekspekˈteɪʃn/", m:"n. 预期；期待", e:"It's not the expectation I want." },
+  { w:"frustrated", p:"/frʌˈstreɪtɪd/", m:"adj. 沮丧的", e:"I feel very frustrated." },
+  { w:"adapt", p:"/əˈdæpt/", m:"v. 适应", e:"Now I'm very adapted to the environment." },
   { w:"beggar", p:"/ˈbeɡə/", m:"n. 乞丐", e:"Yesterday a beggar knocked at my door." },
   { w:"knock", p:"/nɒk/", m:"v. 敲（门）", e:"A beggar knocked at my door." },
   { w:"pocket", p:"/ˈpɒkɪt/", m:"n. 口袋", e:"He put a piece of cheese in his pocket." },
